@@ -31,8 +31,6 @@ return {
                 "rust_analyzer",
                 "tsserver",
                 "clangd",
-                "neocmake",
-                "gopls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
