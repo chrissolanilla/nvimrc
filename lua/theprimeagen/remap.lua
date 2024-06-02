@@ -10,6 +10,12 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+-- Map <C-q> in terminal mode to exit terminal and go back to the previous buffer
+vim.api.nvim_set_keymap('t', '<leader>t', [[<C-\><C-n><cmd>bd!<CR>]], { noremap = true, silent = true })
+
+vim.keymap.set("n", "dd", [["_dd]])
+vim.keymap.set("n", "x", '"_x"')
+
 vim.keymap.set("n", "<leader>vwm", function()
     require("vim-with-me").StartVimWithMe()
 end)
@@ -17,7 +23,6 @@ vim.keymap.set("n", "<leader>svwm", function()
     require("vim-with-me").StopVimWithMe()
 end)
 
-vim.keymap.set('t', 'C-\\>', '<C-\\><C-n>')
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
