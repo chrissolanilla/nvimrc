@@ -1,4 +1,13 @@
-vim.opt.guicursor = ""
+vim.opt.guicursor = {
+    -- Define cursor for normal mode
+    'n-v-c:block',
+    -- Define cursor for insert mode
+    'i:ver25',
+    -- Define cursor for replace mode
+    'r:hor20',
+    -- Define cursor for visual mode
+    'v:hor20'
+}
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
