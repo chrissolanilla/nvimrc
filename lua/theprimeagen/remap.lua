@@ -4,7 +4,7 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 --save remap
-vim.keymap.set("i", "<M-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
+vim.keymap.set("i", "<M-s>", "<Esc>:w<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-s>", ":w<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "J", "mzJ`z")
@@ -12,13 +12,13 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-
+--map CTRL A to be highlihgt all
+vim.keymap.set("n", "<C-a>", "ggVG")
 -- Map <C-q> in terminal mode to exit terminal and go back to the previous buffer
 vim.api.nvim_set_keymap('t', '<leader>t', [[<C-\><C-n><cmd>bd!<CR>]], { noremap = true, silent = true })
 
 vim.keymap.set("n", "dd", [["_dd]])
 vim.keymap.set("n", "x", '"_x"')
-
 vim.keymap.set("n", "<leader>vwm", function()
     require("vim-with-me").StartVimWithMe()
 end)
