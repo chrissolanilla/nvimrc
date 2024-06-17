@@ -8,7 +8,12 @@ return {
         -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
     config = function()
-        require('neo-tree').setup({})
+        require('neo-tree').setup({
+            window = {
+                width = 30,
+                position = "right"
+            }
+        })
 
         -- vim.keymap.set('n', '<leader>pd', , {})a
         vim.keymap.set('n', '<C-k>', '<Cmd>Neotree right<CR>')
