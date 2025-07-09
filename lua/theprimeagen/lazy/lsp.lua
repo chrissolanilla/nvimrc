@@ -21,7 +21,8 @@ return {
             "force",
             {},
             vim.lsp.protocol.make_client_capabilities(),
-            cmp_lsp.default_capabilities())
+            cmp_lsp.default_capabilities()
+        )
 
         require("fidget").setup({})
         require("mason").setup()
@@ -35,7 +36,7 @@ return {
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
+                        capabilities = capabilities,
                     }
                 end,
 
@@ -47,17 +48,19 @@ return {
                             Lua = {
                                 diagnostics = {
                                     globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                }
-                            }
-                        }
+                                },
+                            },
+                        },
                     }
                 end,
+
+                -- *** Updated clangd setup ***
                 ["clangd"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.clangd.setup {
                         capabilities = capabilities,
                         cmd = {
-                            "clangd",
+                            "/Users/ch862076/.local/share/nvim/mason/bin/clangd",
                             "--header-insertion=never",
                             "--clang-tidy",
                             "--completion-style=detailed",
@@ -67,58 +70,49 @@ return {
                             clangdFileStatus = true,
                         },
                         root_dir = function()
+                            -- Use the current directory as the root for single-file projects
                             return vim.loop.cwd()
                         end,
+                        settings = {
+                            clangd = {
+                                fallbackFlags = {
+                                    "--std=gnu++17",
+                                    "-nostdinc++",
+                                    "-I/Users/ch862076/includes",
+                                    "-I/opt/homebrew/Cellar/gcc/14.2.0/include/c++/14.2.0",
+                                    "-I/opt/homebrew/Cellar/gcc/14.2.0/include/c++/14.2.0/aarch64-apple-darwin22/",
+                                },
+                            },
+                        },
                         on_attach = function(client, bufnr)
                             local function buf_set_option(...)
                                 vim.api.nvim_buf_set_option(bufnr, ...)
                             end
                             buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
                             local opts = { noremap = true, silent = true }
                             vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
                             vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<Cmd>lua vim.lsp.buf.implementation()<CR>",
-                                opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>",
-                                opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wa",
-                                "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wr",
-                                "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wl",
-                                "<Cmd>lua vim.lsp.buf.list_workspace_folders()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>D",
-                                "<Cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>rn", "<Cmd>lua vim.lsp.buf.rename()<CR>",
-                                opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>",
-                                opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<Cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wa", "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wr", "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wl", "<Cmd>lua vim.lsp.buf.list_workspace_folders()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>D", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>rn", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
                             vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<Cmd>lua vim.lsp.buf.references()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>e",
-                                "<Cmd>lua vim.diagnostic.open_float()<CR>", opts)
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>e", "<Cmd>lua vim.diagnostic.open_float()<CR>", opts)
                             vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", "<Cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
                             vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<Cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>q",
-                                "<Cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-                            vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+                            vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>q", "<Cmd>lua vim.diagnostic.setloclist()<CR>", opts)
                         end,
-                        settings = {
-                            clangd = {
-                                compilationDatabaseDirectory = ".",
-                                fallbackFlags = {
-                                    "-std=c++14",
-                                    "-I/home/chrissolanilla/raylib/src",
-                                    "-I/home/chrissolanilla/raylib/src/external"
-                                },
-                            },
-                        },
                     }
                 end,
-            }
+            },
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
         cmp.setup({
             snippet = {
                 expand = function(args)
@@ -134,10 +128,10 @@ return {
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
-                { name = 'codeium' }, -- adds codeium
+                { name = 'codeium' }, -- if you're using codeium
             }, {
                 { name = 'buffer' },
-            })
+            }),
         })
 
         vim.diagnostic.config({
@@ -151,6 +145,6 @@ return {
                 prefix = "",
             },
         })
-    end
+    end,
 }
 

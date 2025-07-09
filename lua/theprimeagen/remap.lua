@@ -15,7 +15,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 --map CTRL A to be highlihgt all
 vim.keymap.set("n", "<C-a>", "ggVG")
 -- Map <C-q> in terminal mode to exit terminal and go back to the previous buffer
-vim.api.nvim_set_keymap('t', '<leader>t', [[<C-\><C-n><cmd>bd!<CR>]], { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('t', '<leader>t', [[<C-\><C-n><cmd>bd!<CR>]], { noremap = true, silent = true })
 
 vim.keymap.set("n", "dd", [["_dd]])
 vim.keymap.set("n", "x", '"_x"')
@@ -30,6 +30,7 @@ end)
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- next greatest remap ever : asbjornHaland
+vim.keymap.set("n", "<leader>t", ":%s/ \\{4}/\\t/g<CR>")
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
@@ -47,7 +48,8 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>s", ":%retab<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set(
