@@ -30,9 +30,11 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
-                "tsserver",
-                "clangd",
+				"clangd",
+                "ts_ls",
+                "pyright",
             },
+            automatic_installation = true,
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
